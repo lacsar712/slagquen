@@ -17,11 +17,14 @@ func (a *App) CalibrateFeed(ctx context.Context, tower model.TowerID, holder str
 	if err := a.feedLeases.Require(tower, holder, 30*time.Second); err != nil {
 		return err
 	}
+	// Release on every return path: a probe fault (e.g. disconnected mid-zero)
+	// must not leave the feed lease held, or the tower stays "occupied" and
+	// downstream quench/spray acquisition is blocked until a full restart.
+	defer a.feedLeases.ReleaseHolder(tower, holder)
 	if CalibrateProbe != nil {
 		if err := CalibrateProbe(ctx); err != nil {
 			return fmt.Errorf("calibrate: %w", err)
 		}
 	}
-	a.feedLeases.ReleaseHolder(tower, holder)
 	return nil
 }

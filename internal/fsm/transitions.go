@@ -23,6 +23,8 @@ var towerTransitions = []Transition{
 	{model.TowerDrying, model.TowerFault, "fault"},
 	{model.TowerEqualize, model.TowerFault, "fault"},
 	{model.TowerCool, model.TowerFault, "fault"},
+	{model.TowerIdle, model.TowerFault, "fault"},
+	{model.TowerShutdown, model.TowerFault, "fault"},
 	{model.TowerFault, model.TowerShutdown, "shutdown"},
 	{model.TowerIdle, model.TowerShutdown, "shutdown"},
 }

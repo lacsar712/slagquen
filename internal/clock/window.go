@@ -19,7 +19,7 @@ func NewQuenchWindow(clk Clock, duration time.Duration) *QuenchWindow {
 }
 
 func (w *QuenchWindow) Active(anchor time.Time) bool {
-	return time.Since(anchor) < w.duration
+	return w.clk.Now().Sub(anchor) < w.duration
 }
 
 func (w *QuenchWindow) Require(anchor time.Time) error {

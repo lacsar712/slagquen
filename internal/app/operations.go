@@ -16,7 +16,7 @@ func (a *App) ValidateSlagDrift(ctx context.Context, moistPct float64) error {
 	if moistPct <= limit {
 		return nil
 	}
-	return fmt.Errorf("moisture: %v", model.ErrSlagDrift)
+	return fmt.Errorf("moisture: %w", model.ErrSlagDrift)
 }
 
 func (a *App) ConfirmGranHold(ctx context.Context, anchor time.Time) error {

@@ -80,6 +80,9 @@ type SlagSnapshot struct {
 
 func CloneSlagSnapshot(s SlagSnapshot) SlagSnapshot {
 	out := SlagSnapshot{Tower: s.Tower}
-	out.Segments = s.Segments
+	if len(s.Segments) > 0 {
+		out.Segments = make([]SegmentSnapshot, len(s.Segments))
+		copy(out.Segments, s.Segments)
+	}
 	return out
 }

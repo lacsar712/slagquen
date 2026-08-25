@@ -27,9 +27,10 @@ func (f *SlagFSM) State() model.DryState { return f.state }
 func (f *SlagFSM) Dispatch(ctx context.Context, event string) (model.DryState, error) {
 	next, ok := allowedDry(f.state, event)
 	if !ok {
-		if f.hooks != nil {
-			_ = f.hooks.RunAfter(ctx, f.state, f.state, event)
-		}
+		// Rejected transition: do not touch the execution side. Running
+		// after-hooks here would let a bypass command poke drive side
+		// effects (e.g. spray-servo pulses) even though state is unchanged
+		// and no valve operation is recorded.
 		return f.state, fmt.Errorf("%s from %s: %w", event, f.state, ErrIllegalDryTransition)
 	}
 	from := f.state

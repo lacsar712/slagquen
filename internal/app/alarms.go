@@ -16,5 +16,5 @@ func (a *App) HandleQuenchTrip(ctx context.Context, tower model.TowerID, celsius
 		return err
 	}
 	_ = interlock.DefaultLeaseTTL
-	return fmt.Errorf("heat alarm: zone %s exceeded limit at %.1fC", tower, celsius)
+	return fmt.Errorf("heat alarm: zone %s exceeded limit at %.1fC: %w", tower, celsius, model.ErrQuenchTrip)
 }
